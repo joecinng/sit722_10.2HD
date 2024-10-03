@@ -62,7 +62,9 @@ jobs:
       - name: Get ECR Repository URL
         id: ecr
         run: |
-          echo "ECR_URL=$(terraform output -raw sit722_ecr)" >> $GITHUB_ENV
+          ECR_URL=$(terraform output -raw sit722_ecr)
+          echo "ECR_URL=${ECR_URL}" >> $GITHUB_ENV
+          echo "ECR_URL: ${ECR_URL}"  # Print to verify
 
       - name: Login to ECR
         run: |
