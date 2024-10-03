@@ -14,7 +14,7 @@ jobs:
       AWS_REGION: us-east-1
       TF_LOG: DEBUG
 
-       # Variables for Terraform
+      # Variables for Terraform
       SUBNET_IDS: ${{ secrets.SUBNET_IDS }}  # Comma-separated list of subnet IDs
       EKS_CLUSTER_ROLE_ARN: ${{ secrets.EKS_CLUSTER_ROLE_ARN }}  # IAM role ARN for EKS cluster
       EKS_NODE_ROLE_ARN: ${{ secrets.EKS_NODE_ROLE_ARN }}  # IAM role ARN for EKS node group
@@ -31,28 +31,31 @@ jobs:
           cd terraform
           terraform init  
 
+      - name: Check for Existing Resources
+        id: check_resources
+        run: |
+          cd terraform
+          terraform init -input=false
+          RESOURCES=$(terraform state list)
+          if [[ -z "$RESOURCES" ]]; then
+            echo "No existing resources found, will create them."
+            echo "CREATE=true" >> $GITHUB_ENV
+          else
+            echo "Existing resources found: $RESOURCES"
+            echo "CREATE=false" >> $GITHUB_ENV
+          fi
 
-#     - name: Terraform Plan
-#        run: |
-#          cd terraform
-#          terraform plan -refresh=false -var "AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }}" \
-#            -var "AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }}" \
-#            -var "SUBNET_IDS=${{ secrets.SUBNET_IDS }}" \
-#            -var "EKS_CLUSTER_ROLE_ARN=${{ secrets.EKS_CLUSTER_ROLE_ARN }}" \
-#            -var "EKS_NODE_ROLE_ARN=${{ secrets.EKS_NODE_ROLE_ARN }}" \
-#            -var "SECURITY_GROUP_IDS=${{ secrets.SECURITY_GROUP_IDS }}"   
-#        timeout-minutes: 30
-
-#      - name: Terraform Apply
-#        run: |
-#          cd terraform
-#          terraform apply -auto-approve -var "AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }}" \
-#            -var "AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }}" \
-#            -var "SUBNET_IDS=${{ secrets.SUBNET_IDS }}" \
-#            -var "EKS_CLUSTER_ROLE_ARN=${{ secrets.EKS_CLUSTER_ROLE_ARN }}" \
-#            -var "EKS_NODE_ROLE_ARN=${{ secrets.EKS_NODE_ROLE_ARN }}" \
-#            -var "SECURITY_GROUP_IDS=${{ secrets.SECURITY_GROUP_IDS }}"
-#        timeout-minutes: 30
+      - name: Terraform Apply
+        if: env.CREATE == 'true'
+        run: |
+          cd terraform
+          terraform apply -auto-approve -var "AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }}" \
+            -var "AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }}" \
+            -var "SUBNET_IDS=${{ secrets.SUBNET_IDS }}" \
+            -var "EKS_CLUSTER_ROLE_ARN=${{ secrets.EKS_CLUSTER_ROLE_ARN }}" \
+            -var "EKS_NODE_ROLE_ARN=${{ secrets.EKS_NODE_ROLE_ARN }}" \
+            -var "SECURITY_GROUP_IDS=${{ secrets.SECURITY_GROUP_IDS }}"
+        timeout-minutes: 30
 
       - name: Configure AWS CLI
         run: |
@@ -63,9 +66,7 @@ jobs:
       - name: Get ECR Repository URL
         id: ecr
         run: |
-          ECR_URL=$(terraform output -raw sit722_ecr)
-          echo "ECR_URL=${ECR_URL}" >> $GITHUB_ENV
-          echo "ECR_URL: ${ECR_URL}"  # Print to verify
+          echo "ECR_URL=$(terraform output -raw sit722_ecr)" >> $GITHUB_ENV
 
       - name: Login to ECR
         run: |
@@ -84,7 +85,7 @@ jobs:
           sudo chmod +x /usr/local/bin/docker-compose
           docker-compose --version
 
-      # Build the Docker image.
+      # Build the Docker image
       - name: Build Docker Image
         run: ./scripts/build-image.sh
 
