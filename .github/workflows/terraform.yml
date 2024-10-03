@@ -31,27 +31,28 @@ jobs:
           cd terraform
           terraform init  
 
-      - name: Terraform Plan
-        run: |
-          cd terraform
-          terraform plan -refresh=false -var "AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }}" \
-            -var "AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }}" \
-            -var "SUBNET_IDS=${{ secrets.SUBNET_IDS }}" \
-            -var "EKS_CLUSTER_ROLE_ARN=${{ secrets.EKS_CLUSTER_ROLE_ARN }}" \
-            -var "EKS_NODE_ROLE_ARN=${{ secrets.EKS_NODE_ROLE_ARN }}" \
-            -var "SECURITY_GROUP_IDS=${{ secrets.SECURITY_GROUP_IDS }}"   
-        timeout-minutes: 30
 
-      - name: Terraform Apply
-        run: |
-          cd terraform
-          terraform apply -auto-approve -var "AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }}" \
-            -var "AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }}" \
-            -var "SUBNET_IDS=${{ secrets.SUBNET_IDS }}" \
-            -var "EKS_CLUSTER_ROLE_ARN=${{ secrets.EKS_CLUSTER_ROLE_ARN }}" \
-            -var "EKS_NODE_ROLE_ARN=${{ secrets.EKS_NODE_ROLE_ARN }}" \
-            -var "SECURITY_GROUP_IDS=${{ secrets.SECURITY_GROUP_IDS }}"
-        timeout-minutes: 30
+#     - name: Terraform Plan
+#        run: |
+#          cd terraform
+#          terraform plan -refresh=false -var "AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }}" \
+#            -var "AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }}" \
+#            -var "SUBNET_IDS=${{ secrets.SUBNET_IDS }}" \
+#            -var "EKS_CLUSTER_ROLE_ARN=${{ secrets.EKS_CLUSTER_ROLE_ARN }}" \
+#            -var "EKS_NODE_ROLE_ARN=${{ secrets.EKS_NODE_ROLE_ARN }}" \
+#            -var "SECURITY_GROUP_IDS=${{ secrets.SECURITY_GROUP_IDS }}"   
+#        timeout-minutes: 30
+
+#      - name: Terraform Apply
+#        run: |
+#          cd terraform
+#          terraform apply -auto-approve -var "AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }}" \
+#            -var "AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }}" \
+#            -var "SUBNET_IDS=${{ secrets.SUBNET_IDS }}" \
+#            -var "EKS_CLUSTER_ROLE_ARN=${{ secrets.EKS_CLUSTER_ROLE_ARN }}" \
+#            -var "EKS_NODE_ROLE_ARN=${{ secrets.EKS_NODE_ROLE_ARN }}" \
+#            -var "SECURITY_GROUP_IDS=${{ secrets.SECURITY_GROUP_IDS }}"
+#        timeout-minutes: 30
 
       - name: Configure AWS CLI
         run: |
