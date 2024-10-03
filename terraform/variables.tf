@@ -1,7 +1,7 @@
 # Sets global variables for this Terraform project.
 
 variable "app_name" {
-  default     = "sit722_10_2hd_terraform"
+  default = "sit722_10_2hd_terraform"
 }
 
 variable "kubernetes_version" {    
@@ -36,4 +36,13 @@ variable "EKS_CLUSTER_ROLE_ARN" {
 variable "EKS_NODE_ROLE_ARN" {
   description = "The IAM role ARN for the EKS node group"
   type        = string
+}
+
+variable "SECURITY_GROUP_IDS" {
+  description = "Comma-separated list of security group IDs for the EKS cluster"
+  type        = string
+}
+
+locals {
+  security_group_ids_list = split(",", var.SECURITY_GROUP_IDS)
 }
