@@ -33,3 +33,7 @@ variable "EKS_NODE_ROLE_ARN" {
   description = "The IAM role ARN for the EKS node group"
   type        = string
 }
+
+locals {
+  subnet_ids_list = split(",", var.SUBNET_IDS)
+}
