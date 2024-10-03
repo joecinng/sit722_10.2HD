@@ -23,6 +23,13 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
+      - name: Debug Environment Variables
+        run: |
+          echo "AWS_ACCESS_KEY_ID: $AWS_ACCESS_KEY_ID"
+          echo "EKS_CLUSTER_ROLE_ARN: $EKS_CLUSTER_ROLE_ARN"
+          echo "EKS_NODE_ROLE_ARN: $EKS_NODE_ROLE_ARN"
+          echo "SUBNET_IDS: $SUBNET_IDS"
+
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v2.0.3
 
