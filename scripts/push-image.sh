@@ -20,5 +20,5 @@ set -u # or set -o nounset
 echo "Logging in to ECR..."
 aws ecr get-login-password --region "$AWS_REGION" | docker login --username AWS --password-stdin "$ECR_URL"
 
-docker push $ECR_URL/book_catalog
-docker push $ECR_URL/inventory_management
+docker push $ECR_URL:book_catalog
+docker push $ECR_URL:inventory_management
