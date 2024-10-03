@@ -31,40 +31,23 @@ jobs:
           cd terraform
           terraform init  
 
-      - name: Terraform Plan
-        run: |
-          cd terraform
-          terraform plan -refresh=false -var "AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }}" \
-            -var "AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }}" \
-            -var "SUBNET_IDS=${{ secrets.SUBNET_IDS }}" \
-            -var "EKS_CLUSTER_ROLE_ARN=${{ secrets.EKS_CLUSTER_ROLE_ARN }}" \
-            -var "EKS_NODE_ROLE_ARN=${{ secrets.EKS_NODE_ROLE_ARN }}" \
-            -var "SECURITY_GROUP_IDS=${{ secrets.SECURITY_GROUP_IDS }}"   
-        timeout-minutes: 30
-
-      - name: Terraform Apply
-        run: |
-          cd terraform
-          terraform apply -auto-approve -var "AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }}" \
-            -var "AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }}" \
-            -var "SUBNET_IDS=${{ secrets.SUBNET_IDS }}" \
-            -var "EKS_CLUSTER_ROLE_ARN=${{ secrets.EKS_CLUSTER_ROLE_ARN }}" \
-            -var "EKS_NODE_ROLE_ARN=${{ secrets.EKS_NODE_ROLE_ARN }}" \
-            -var "SECURITY_GROUP_IDS=${{ secrets.SECURITY_GROUP_IDS }}"
-        timeout-minutes: 30
-
       - name: Configure AWS CLI
         run: |
           aws configure set aws_access_key_id "${{ secrets.AWS_ACCESS_KEY_ID }}"
           aws configure set aws_secret_access_key "${{ secrets.AWS_SECRET_ACCESS_KEY }}"
           aws configure set default.region "us-east-1"
 
-      - name: Get ECR URL
+      - name: Get ECR URL from AWS CLI
         run: |
-          cd terraform
-          ECR_URL=$(terraform output -raw sit722_ecr)
+          # Set your ECR repository name (same as var.app_name)
+          REPO_NAME="sit722_10_2hd_terraform"
+          
+          # Get the ECR repository URL
+          ECR_URL=$(aws ecr describe-repositories --repository-names "${REPO_NAME}" --query 'repositories[0].repositoryUri' --output text)
+
+          # Output the ECR URL
           echo "ECR_URL=${ECR_URL}" >> $GITHUB_ENV
-          echo "ECR_URL: ${ECR_URL}"  # Print to verify
+          echo "ECR_URL: ${ECR_URL}"
 
       - name: Login to ECR
         run: |
