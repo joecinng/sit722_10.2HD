@@ -31,18 +31,18 @@ jobs:
           cd terraform
           terraform init  
 
-      - name: Check for Existing Resources
+      - name: Check Existing Resources
         id: check_resources
         run: |
           cd terraform
-          terraform init -input=false
-          RESOURCES=$(terraform state list)
-          if [[ -z "$RESOURCES" ]]; then
-            echo "No existing resources found, will create them."
-            echo "CREATE=true" >> $GITHUB_ENV
+          if terraform state list | grep "sit722_10_2hd_terraform"; then
+            echo "Resources exist, skipping Terraform apply."
+            echo "resources_exist=true" >> $GITHUB_ENV
           else
-            echo "Existing resources found: $RESOURCES"
-            echo "CREATE=false" >> $GITHUB_ENV
+            echo "Resources do not exist, proceeding with Terraform apply."
+            echo "resources_exist=false" >> $GITHUB_ENV
+          fi
+
 
       - name: Terraform Apply
         if: env.CREATE == 'true'
