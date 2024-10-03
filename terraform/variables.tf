@@ -20,8 +20,12 @@ variable "AWS_SECRET_ACCESS_KEY" {
 }
 
 variable "SUBNET_IDS" {
-  description = "List of subnet IDs where the EKS cluster will be deployed"
-  type        = list(string)
+  description = "Comma-separated list of subnet IDs where the EKS cluster will be deployed"
+  type        = string
+}
+
+locals {
+  subnet_ids_list = split(",", var.SUBNET_IDS)
 }
 
 variable "EKS_CLUSTER_ROLE_ARN" {
@@ -32,8 +36,4 @@ variable "EKS_CLUSTER_ROLE_ARN" {
 variable "EKS_NODE_ROLE_ARN" {
   description = "The IAM role ARN for the EKS node group"
   type        = string
-}
-
-locals {
-  subnet_ids_list = split(",", var.SUBNET_IDS)
 }
