@@ -17,5 +17,5 @@ set -u # or set -o nounset
 docker-compose build
 
 # Tag the images
-docker tag book_catalog $ECR_URL/book_catalog
-docker tag inventory_management $ECR_URL/inventory_management
+docker tag book_catalog $ECR_URL:book_catalog
+docker tag inventory_management $ECR_URL:inventory_management
