@@ -30,16 +30,16 @@ jobs:
         run: |
           cd terraform
           terraform init  
-
+          
       - name: Check Existing Resources
         id: check_resources
         run: |
           cd terraform
-          if terraform state list | grep "sit722_10_2hd_terraform"; then
-            echo "Resources exist, skipping Terraform apply."
+          if terraform state list | grep "aws_ecr_repository.sit722_ecr"; then
+            echo "ECR repository exists, skipping Terraform apply."
             echo "resources_exist=true" >> $GITHUB_ENV
           else
-            echo "Resources do not exist, proceeding with Terraform apply."
+            echo "ECR repository does not exist, proceeding with Terraform apply."
             echo "resources_exist=false" >> $GITHUB_ENV
           fi
 
