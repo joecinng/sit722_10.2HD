@@ -1,9 +1,6 @@
 name: 'Terraform Create + Deploy to EKS'
 
 on:
-  push:
-    paths:
-      - 'terraform/*.tf'
   workflow_dispatch:
 
 jobs:
@@ -18,10 +15,10 @@ jobs:
       TF_LOG: DEBUG
 
        # Variables for Terraform
-      VPC_ID: ${{ secrets.VPC_ID }}  # Add your VPC ID secret
       SUBNET_IDS: ${{ secrets.SUBNET_IDS }}  # Comma-separated list of subnet IDs
       EKS_CLUSTER_ROLE_ARN: ${{ secrets.EKS_CLUSTER_ROLE_ARN }}  # IAM role ARN for EKS cluster
       EKS_NODE_ROLE_ARN: ${{ secrets.EKS_NODE_ROLE_ARN }}  # IAM role ARN for EKS node group
+      SECURITY_GROUP_IDS: ${{ secrets.SECURITY_GROUP_IDS }}  # Comma-separated list of security group IDs
 
     steps:
       - uses: actions/checkout@v3

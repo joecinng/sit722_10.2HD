@@ -3,7 +3,7 @@ resource "aws_eks_cluster" "eks" {
   version          = "1.27" 
   vpc_config {
     subnet_ids = var.SUBNET_IDS
-    security_group_ids = ["sg-0458c9d606b2e628d"]
+    security_group_ids = var.SECURITY_GROUP_IDS
   }
 
   role_arn = var.EKS_CLUSTER_ROLE_ARN
