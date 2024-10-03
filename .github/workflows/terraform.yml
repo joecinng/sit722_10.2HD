@@ -43,7 +43,6 @@ jobs:
           else
             echo "Existing resources found: $RESOURCES"
             echo "CREATE=false" >> $GITHUB_ENV
-          fi
 
       - name: Terraform Apply
         if: env.CREATE == 'true'
