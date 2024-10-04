@@ -21,7 +21,7 @@ spec:
         - containerPort: 80  # The port your application listens on inside the container
         env:
           - name: DATABASE_URL
-            value: "postgresql://sit722_10_2hd_user:n5OmHpht6jKxGhXZatjHEuyT9DxWwMRG@dpg-crukk3tumphs73ep5bj0-a.oregon-postgres.render.com/sit722_10_2hd"
+            value: "${AWS_DATABASE_URL}"
 
 ---
 # Service for Book Catalog Application
@@ -62,7 +62,7 @@ spec:
         - containerPort: 80  # The port your application listens on inside the container
         env:
           - name: DATABASE_URL
-            value: "postgresql://sit722_10_2hd_user:n5OmHpht6jKxGhXZatjHEuyT9DxWwMRG@dpg-crukk3tumphs73ep5bj0-a.oregon-postgres.render.com/sit722_10_2hd"
+            value: "${AWS_DATABASE_URL}"
 
 ---
 # Service for Inventory Management Application

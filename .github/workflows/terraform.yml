@@ -14,11 +14,12 @@ jobs:
       AWS_REGION: us-east-1
       TF_LOG: DEBUG
 
-       # Variables for Terraform
+      # Variables for Terraform
       SUBNET_IDS: ${{ secrets.SUBNET_IDS }}  # Comma-separated list of subnet IDs
       EKS_CLUSTER_ROLE_ARN: ${{ secrets.EKS_CLUSTER_ROLE_ARN }}  # IAM role ARN for EKS cluster
       EKS_NODE_ROLE_ARN: ${{ secrets.EKS_NODE_ROLE_ARN }}  # IAM role ARN for EKS node group
       SECURITY_GROUP_IDS: ${{ secrets.SECURITY_GROUP_IDS }}  # Comma-separated list of security group IDs
+      AWS_DATABASE_URL: ${{ secrets.AWS_DATABASE_URL }}
 
     steps:
       - uses: actions/checkout@v3

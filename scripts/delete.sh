@@ -13,5 +13,8 @@
 
 set -u # or set -o nounset
 : "$ECR_URL"
+: "$AWS_DATABASE_URL"
+
+export AWS_DATABASE_URL="${AWS_DATABASE_URL}"
 
 envsubst < ./scripts/kubernetes/deployment.yaml | kubectl delete -f -

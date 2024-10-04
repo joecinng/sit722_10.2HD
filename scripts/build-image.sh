@@ -13,8 +13,9 @@
 
 set -u # or set -o nounset
 : "$ECR_URL"
+: "$AWS_DATABASE_URL"
 
-docker-compose build
+docker-compose build --build-arg AWS_DATABASE_URL="${AWS_DATABASE_URL}"
 
 # Tag the images
 docker tag book_catalog $ECR_URL:book_catalog

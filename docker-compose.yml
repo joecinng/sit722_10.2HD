@@ -11,7 +11,7 @@ services:
     ports:
       - "4001:80"
     environment:
-      - DATABASE_URL=postgresql://sit722_10_2hd_user:n5OmHpht6jKxGhXZatjHEuyT9DxWwMRG@dpg-crukk3tumphs73ep5bj0-a.oregon-postgres.render.com/sit722_10_2hd
+      - DATABASE_URL=${AWS_DATABASE_URL}
 
   inventory_management:
     image: inventory_management
@@ -22,4 +22,4 @@ services:
     ports:
       - "4002:80"
     environment:
-      - DATABASE_URL=postgresql://sit722_10_2hd_user:n5OmHpht6jKxGhXZatjHEuyT9DxWwMRG@dpg-crukk3tumphs73ep5bj0-a.oregon-postgres.render.com/sit722_10_2hd
+      - DATABASE_URL=${AWS_DATABASE_URL}
